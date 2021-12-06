@@ -1,6 +1,7 @@
 // https://www.valentinog.com/blog/socket-react/
 
 const express = require("express");
+const path = require("path");
 const http = require("http");
 const { SocketAddress } = require("net");
 // const socketIo = require("socket.io");
@@ -10,6 +11,12 @@ const index = require("./routes/index");
 
 const app = express();
 app.use(index);
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
